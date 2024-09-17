@@ -1,0 +1,42 @@
+<canvas id="gameCanvas" width="600" height="="400></canvas>
+<script>
+    //Creating Canvas Context
+    let gameCanvas=document.getElementById("gameCanvas");
+    let gameCtx=gameCanvas.getContext("2d");
+    //Create an off-screen Canvas:-This Canvas willstore the mirrored version of sprite
+    let mirrorCanvas=document.createElement("canvas")
+    let mirrorCtx=mirrorCanvas.getContext("2d");
+    //Loading the original sprite
+    let characterImage=new Image()
+    characterImage.src="path";
+    //When the image loads,precompute the mirrored version
+    characterImage.onLoad=() => {
+        //Setting the dimensions of offscreen canvas
+        mirrorCanvas.width=characterImage.width;
+        mirrorCanvas.height=characterImage.height
+
+        //Draw the mirror image on offscreen canvas
+        mirrorCtx.save();
+        mirrorCtx.scale(-1,1)   //Flipping horizontally
+        mirrorCtx.drawImage(characterImage,-characterImage.width,0);
+        mirrorCtx.restore()
+
+        //Now,the mirrorCanvas/offscreen Canvas conatins the mirrored image
+        //You can draw mirror image on main Canvas i game loop
+        draw();
+    }
+
+
+    //Draw function for demonstration
+    function draw() {
+        //Clearing the main Canvas
+        gameCtx.clearRect(0,0,gameCanvas.width,gameCanvas.height);
+        //Draw the mirrored character from offscreen canvas
+        gameCanvas.drawImage(mirrorCanvas,100,100)   //position is (100,100)
+
+        //Request the next frame for animation purpose
+        requestAnimationFrame(draw);
+    }
+
+
+</script>

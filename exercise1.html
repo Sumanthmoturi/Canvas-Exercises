@@ -1,0 +1,78 @@
+<!--CANVAS Exercises-->
+
+
+<canvas width="600" height="200"></canvas>
+<script>
+  let cx = document.querySelector("canvas").getContext("2d");
+
+  // Draw a trapezoid
+  function drawTrapezoid(cx, x, y, topWidth, bottomWidth, height) {
+    cx.beginPath();
+    cx.moveTo(x - topWidth / 2, y);
+    cx.lineTo(x + topWidth / 2, y);
+    cx.lineTo(x + bottomWidth / 2, y + height);
+    cx.lineTo(x - bottomWidth / 2, y + height);
+    cx.closePath();
+    cx.stroke();
+  }
+
+  // Draw a red diamond
+  function drawDiamond(cx, x, y, width, height) {
+    cx.save();
+    cx.translate(x, y);
+    cx.rotate(Math.PI / 4); // Rotate 45 degrees
+    cx.fillStyle = "red";
+    cx.fillRect(-width / 2, -height / 2, width, height);
+    cx.restore();
+  }
+
+  // Draw a zigzagging line
+  function drawZigzag(cx, x, y, length, segments, amplitude) {
+    cx.beginPath();
+    cx.moveTo(x, y);
+    for (let i = 0; i < segments; i++) {
+      let newX = x + (i + 1) * (length / segments);
+      let newY = y + (i % 2 === 0 ? amplitude : -amplitude);
+      cx.lineTo(newX, newY);
+    }
+    cx.stroke();
+  }
+
+  // Draw a spiral
+  function drawSpiral(cx, x, y, segments, radiusIncrement) {
+    cx.beginPath();
+    let angle = 0;
+    let radius = 0;
+    cx.moveTo(x, y);
+    for (let i = 0; i < segments; i++) {
+      angle += Math.PI / 12; // Increase the angle
+      radius += radiusIncrement; // Increase the radius
+      let newX = x + Math.cos(angle) * radius;
+      let newY = y + Math.sin(angle) * radius;
+      cx.lineTo(newX, newY);
+    }
+    cx.stroke();
+  }
+
+  // Draw a yellow star
+  function drawStar(cx, x, y, points, outerRadius, innerRadius) {
+    cx.beginPath();
+    cx.moveTo(x, y - outerRadius);
+    for (let i = 0; i < points * 2; i++) {
+      let angle = (Math.PI * i) / points;
+      let radius = i % 2 === 0 ? outerRadius : innerRadius;
+      cx.lineTo(x + Math.sin(angle) * radius, y - Math.cos(angle) * radius);
+    }
+    cx.closePath();
+    cx.fillStyle = "yellow";
+    cx.fill();
+    cx.stroke();
+  }
+
+  // Draw shapes
+  drawTrapezoid(cx, 50, 50, 40, 80, 50);
+  drawDiamond(cx, 150, 75, 50, 50);
+  drawZigzag(cx, 250, 50, 100, 10, 20);
+  drawSpiral(cx, 400, 75, 100, 0.5);
+  drawStar(cx, 550, 75, 8, 30, 15);
+</script>

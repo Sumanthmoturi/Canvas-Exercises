@@ -1,0 +1,41 @@
+<canvas width="600" height="300"></canvas>
+<script>
+  let cx = document.querySelector("canvas").getContext("2d");
+  // Example dataset
+  let results = [
+    {name: "Category A", count: 10, color: "red"},
+    {name: "Category B", count: 20, color: "blue"},
+    {name: "Category C", count: 30, color: "green"},
+    {name: "Category D", count: 40, color: "purple"}
+  ];
+  let total = results.reduce((sum, {count}) => sum + count, 0);
+  let currentAngle = -0.5 * Math.PI;
+  let centerX = 300, centerY = 150;
+
+
+  // Add code to draw the slice labels in this loop.
+  for (let result of results) {
+    let sliceAngle = (result.count / total) * 2 * Math.PI;
+    cx.beginPath();
+    cx.arc(centerX, centerY, 100,
+           currentAngle, currentAngle + sliceAngle);
+    currentAngle += sliceAngle;
+    cx.lineTo(centerX, centerY);
+    cx.fillStyle = result.color;
+    cx.fill();
+
+    //Calculating label position
+    let middleAngle=currentAngle-0.5*sliceAngle;
+    let textX=Math.cos(middleAngle) *120 + centerX;
+    let textY=Math.sin(middleAngle) * 120 + centerY;
+
+    //Setting text alignment
+    cx.textAlign=Math.cos(middleAngle)>0 ? "left" : "right";
+    cx.textBaseLine="middle";
+
+    //Draw the label
+    cx.fillStyle="black"
+    cx.font="16px Arial"
+    cx.fillText(result.name,textX,textY)
+  }
+</script>

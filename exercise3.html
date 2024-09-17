@@ -1,0 +1,64 @@
+<canvas width="400" height="400"></canvas>
+<script>
+  let cx = document.querySelector("canvas").getContext("2d");
+  //Box
+  const boxWidth=400
+  const boxHeight=400
+  //Box properties
+  const ballRadius=20;
+  let ballPosition=new Vec(200,200)   //Starting in the center
+  let ballSpeed=new Vec(100,60)       //Speed in pixels per second
+  //Vec class to represent position and vectors
+  class Vec {
+    constructor(x,y) {
+        this.x=x;
+        this.y=y;
+    }
+    //methods to add vectors plus and times
+    plus(other) {
+        return new Vec(this.x + other.x,this.y+other.y);
+
+    }
+    times(factor) {
+        return new Vec(this.x*factor,this.y*factor);
+    }
+  }
+  
+  
+  let lastTime = null;
+  function frame(time) {
+    if (lastTime != null) {
+      updateAnimation(Math.min(100, time - lastTime) / 1000);
+    }
+    lastTime = time;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  function updateAnimation(step) {
+    //Clearing the canvas
+    cx.clearRect(0,0,boxWidth,boxHeight);
+    //Draw the box
+    cx.strokeRect(0,0,boxWdth,boxHeight)
+    
+    
+     // Update ball position
+     ballPosition = ballPosition.plus(ballSpeed.times(step));
+
+// Bounce off walls
+if (ballPosition.x < ballRadius || ballPosition.x > boxWidth - ballRadius) {
+  ballSpeed = new Vec(-ballSpeed.x, ballSpeed.y);
+}
+if (ballPosition.y < ballRadius || ballPosition.y > boxHeight - ballRadius) {
+  ballSpeed = new Vec(ballSpeed.x, -ballSpeed.y);
+}
+
+// Draw the ball
+cx.beginPath();
+cx.arc(ballPosition.x, ballPosition.y, ballRadius, 0, 2 * Math.PI);
+cx.fillStyle = "blue";
+cx.fill();
+
+
+  }
+</script>
